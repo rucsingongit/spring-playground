@@ -15,6 +15,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
@@ -28,9 +29,11 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class LessonControllerIntegrationTest {
 
@@ -79,6 +82,23 @@ public class LessonControllerIntegrationTest {
 
     @Test
     public void getAllBetweenDateTest() throws Exception {
+        Date dateFrom = new Date(df.parse("2016-07-01").getTime());
+        Date dateTo = new Date(df.parse("2016-09-30").getTime());
+
+        String url = String.format("/api/lessons/between/%s/%s",dateFrom.toString(),dateTo.toString());
+        ResponseEntity<List<Lesson>> responseEntity = restTemplate.exchange(url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Lesson>>() {
+                });
+        assertThat(responseEntity.getStatusCode().value(), is(HttpStatus.OK.value()));
+        List<Lesson> lessons = responseEntity.getBody();
+        assertNotNull(lessons);
+        assertThat(lessons.size(), is(3));
+        List<String> actualTitles = lessons.stream()
+                .map(Lesson::getTitle)
+                .collect(Collectors.toList());
+        assertThat(actualTitles, containsInAnyOrder(titles[1],titles[2],titles[3]));
+        assertTrue(lessons.stream().anyMatch(e -> dateFrom.compareTo(e.getDeliverOn()) < 1));
+        assertTrue(lessons.stream().anyMatch(e -> dateTo.compareTo(e.getDeliverOn()) > -1));
     }
 
     @Test
