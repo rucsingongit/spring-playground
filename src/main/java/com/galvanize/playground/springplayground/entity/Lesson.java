@@ -24,30 +24,4 @@ public class Lesson {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date deliveredOn;
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public Lesson setId(Long id) {
-//        this.id = id;
-//        return this;
-//    }
-//
-//    public String getTitle() {
-//        return title;
-//    }
-//
-//    public Lesson setTitle(String title) {
-//        this.title = title;
-//        return this;
-//    }
-//
-//    public Date getDeliveredOn() {
-//        return deliveredOn;
-//    }
-//
-//    public Lesson setDeliveredOn(Date deliveredOn) {
-//        this.deliveredOn = deliveredOn;
-//        return this;
-//    }
 }
