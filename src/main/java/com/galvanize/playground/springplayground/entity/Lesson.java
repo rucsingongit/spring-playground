@@ -22,7 +22,7 @@ public class Lesson {
     private String title;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date deliverOn;
+    private Date deliveredOn;
 
 //    public Long getId() {
 //        return id;
@@ -42,12 +42,12 @@ public class Lesson {
 //        return this;
 //    }
 //
-//    public Date getDeliverOn() {
-//        return deliverOn;
+//    public Date getDeliveredOn() {
+//        return deliveredOn;
 //    }
 //
-//    public Lesson setDeliverOn(Date deliverOn) {
-//        this.deliverOn = deliverOn;
+//    public Lesson setDeliveredOn(Date deliveredOn) {
+//        this.deliveredOn = deliveredOn;
 //        return this;
 //    }
 }
