@@ -50,19 +50,18 @@ public class LessonController {
     @PutMapping(value = "/lesson/{id}")
     public Lesson updateById(@RequestBody Lesson bodyLesson, @PathVariable Long id) {
         Optional<Lesson> byId = repository.findById(id);
-        if (!byId.isPresent()) {
+        if (!byId.isPresent())
             throw new LessonNotFoundException(String.format(NOT_FOUND_FORMAT, id));
-        }
-        bodyLesson.setId(id);
-        return repository.save(bodyLesson);
+        Lesson lesson = byId.get();
+        lesson.setTitle(bodyLesson.getTitle());
+        lesson.setDeliveredOn(bodyLesson.getDeliveredOn());
+        return repository.save(lesson);
     }
 
     @DeleteMapping("/lesson/{id}")
     public void deleteById(@PathVariable Long id){
-        Optional<Lesson> byId = repository.findById(id);
-        if (!byId.isPresent()) {
+        if (!repository.existsById(id))
             throw new LessonNotFoundException(String.format(NOT_FOUND_FORMAT, id));
-        }
         repository.deleteById(id);
     }
 
@@ -72,7 +71,7 @@ public class LessonController {
     }
 
     @PatchMapping("/lesson/{id}/title/{title}")
-    public Lesson updateTitle(@PathVariable Long id, @PathVariable String title) {
+    public Lesson updateTitleById(@PathVariable Long id, @PathVariable String title) {
         Optional<Lesson> byId = repository.findById(id);
         if (!byId.isPresent())
             throw new LessonNotFoundException(String.format(NOT_FOUND_FORMAT, id));
